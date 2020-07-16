@@ -1,0 +1,60 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: serverless-lambda-chaining
+# app and org for use with dashboard.serverless.com
+app: serverless-lambda-chaining
+org: yukliadev
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: ${opt:stage,'dev'}
+  region: ${opt:region, 'eu-west-3'}  
+  iamRoleStatements:
+    - Effect: "Allow"
+      Resource: "*"
+      Action:
+        - "sns:*"
+
+custom:
+  mySnsTopic: "${self:service}-${self:provider.stage}-sns-consume"
+  mySnsTopicArn:
+    local:
+      "arn:aws:sns:us-east-1:123456789012:${self:custom.mySnsTopic}"
+    dev:
+      { "Fn::Join" : ["", ["arn:aws:sns:${self:provider.region}:", { "Ref" : "AWS::AccountId" }, ":${self:custom.mySnsTopic}" ] ]  }
+
+functions:
+  L1_Publish:
+    handler: functions/l1Publish.handler
+    events:
+      - http:
+          path: /l1Publish/{myParam}
+          method: get
+          request:
+            parameters:
+              paths:
+                myParam: true
+  L2_Consume_Publish:
+    handler:  functions/l2ConsumePublish.handler
+    events:
+      - sns: ${self:custom.mySnsTopic}
+  L3_Consume:
+    handler: functions/l3Consume.handler
+    events:
+      - sns: ${self:custom.mySnsTopic}
