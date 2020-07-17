@@ -1,24 +1,29 @@
-import json, boto3
+import json, boto3, os
 
 
 def handler(event, context):
-    body = {
-        "message": "Go Serverless v1.0! Your function executed successfully!",
-        "input": event
-    }
+    message_from_publisher = json.loads(event['Records'][0]['Sns']['Message'])
+    my_param = message_from_publisher['myParamFromPublisher']
+    print("👷 Received paramater from publisher: '{0}'".format(my_param))
+    client = boto3.client('sns')
+
+    # Message attributes are sent only when the message structure is String, not JSON
+    snsResponse= client.publish(
+        TopicArn=os.environ['snsTopicForConsumer2Arn'],
+        Message=json.dumps({"default": json.dumps({'myParamFromConsumerPublisher': my_param})}),
+        Subject='TestConsumerPublisher',
+        MessageStructure='json',
+        MessageAttributes={
+            'test-attr': {
+                'DataType': 'String',
+                'StringValue': 'myAttrValue'
+            }
+        }
+    )
 
     response = {
         "statusCode": 200,
-        "body": json.dumps(body)
+        "body": json.dumps(snsResponse)
     }
 
     return response
-
-    # Use this code if you don't use the http event with the LAMBDA-PROXY
-    # integration
-    """
-    return {
-        "message": "Go Serverless v1.0! Your function executed successfully!",
-        "event": event
-    }
-    """
