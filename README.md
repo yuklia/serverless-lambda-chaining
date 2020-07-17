@@ -7,9 +7,7 @@ L1 (publisher) => SNS => L2 (consumer & publisher) => SNS => L3 (consumer)
 ## Prerequisites
 1. Sign up to https://www.serverless.com/
 2. Go to dashboard and add app 'serverless-lambda-chaining'
-3. Deploy service on your local machine
-
-4. Define snsTopicArn: 
+3. Deploy service on your local machine (follow instructions in dashboard)
 
 
 ## Serverless [variables](https://www.serverless.com/framework/docs/providers/aws/guide/variables/) cheetsheet:

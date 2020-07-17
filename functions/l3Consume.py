@@ -2,6 +2,10 @@ import json
 
 
 def handler(event, context):
+    message_from_publisher = json.loads(event['Records'][0]['Sns']['Message'])
+    my_param = message_from_publisher['myParamFromConsumerPublisher']
+    print("👷 Received paramater from ConsumerPublisher: '{0}'".format(my_param))
+    
     body = {
         "message": "Go Serverless v1.0! Your function executed successfully!",
         "input": event
@@ -14,11 +18,3 @@ def handler(event, context):
 
     return response
 
-    # Use this code if you don't use the http event with the LAMBDA-PROXY
-    # integration
-    """
-    return {
-        "message": "Go Serverless v1.0! Your function executed successfully!",
-        "event": event
-    }
-    """
