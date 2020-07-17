@@ -12,7 +12,7 @@ L1 (publisher) => SNS => L2 (consumer & publisher) => SNS => L3 (consumer)
 4. Define snsTopicArn: 
 
 
-### Serverless [variables](https://www.serverless.com/framework/docs/providers/aws/guide/variables/) cheetsheet:
+## Serverless [variables](https://www.serverless.com/framework/docs/providers/aws/guide/variables/) cheetsheet:
 
 Referencing CLI Options
 ```
@@ -24,4 +24,9 @@ ${opt:stage,'dev'}
 AWS CloudFormation [Fn::Join](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-join.html)
 ```
 { "Fn::Join" : ["", ["arn:aws:sns:${self:provider.region}:", { "Ref" : "AWS::AccountId" }, ":${self:custom.mySnsTopic}" ] ]  }
+```
+
+Remove serverless services
+```
+serverles remove
 ```
