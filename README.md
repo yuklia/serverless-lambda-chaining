@@ -1,8 +1,11 @@
-This is simple example which shows up how to do lambda chaining in python + boto3
-Might be used as a skeleton for your task.
+> 👷 This is a simple example that shows up how to do lambda chaining in python + boto3
+> 
+> Might be used as a skeleton for your task.
 
-Flow:
-L1 (publisher) => SNS => L2 (consumer & publisher) => SNS => L3 (consumer)
+## System Design
+
+![Alt](doc/snsV2.png)
+
 
 ## Prerequisites
 1. Sign up to https://www.serverless.com/
