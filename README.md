@@ -31,3 +31,25 @@ Remove serverless services
 ```
 serverles remove
 ```
+
+## Install python package
+```
+pip install numpy
+pip freeze > requirements.txt
+cat requirements.txt
+```
+
+```
+npm init
+npm install --save serverless-python-requirements
+```
+
+```
+# serverless.yml
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
+```
